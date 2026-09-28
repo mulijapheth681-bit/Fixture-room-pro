@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Premier League 6 Teams</title>
+<title>Premier League Auto Table</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,sans-serif}
 body{background:#0b0e14;color:#e6e6e6;min-height:100vh}
@@ -14,6 +14,7 @@ body{background:#0b0e14;color:#e6e6e6;min-height:100vh}
 .btn-small{padding:6px 10px;font-size:12px;width:auto;border-radius:8px}
 .btn-ghost{background:#1a1e2b;color:#8b949e}
 .btn-danger{background:#da3633;color:#fff}
+.btn-green{background:#238636;color:#fff}
 .container{max-width:800px;margin:0 auto;padding:12px}
 .card{background:#151a27;border:1px solid #1e2636;border-radius:18px;padding:16px;margin-bottom:12px}
 .card h3{font-size:12px;color:#8b949e;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
@@ -25,8 +26,9 @@ body{background:#0b0e14;color:#e6e6e6;min-height:100vh}
 .bdg{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#fff;flex-shrink:0}
 .vs{width:26px;height:26px;background:#1a1e2b;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;color:#6e7a8a;font-weight:700}
 .meta{font-size:11px;color:#6e7a8a;margin-top:5px}
-.input,select{width:100%;background:#0e121d;border:1px solid #1e2636;border-radius:12px;padding:12px;color:#fff;margin:5px 0}
+.input,select{width:100%;background:#0e121d;border:1px solid #1e2636;border-radius:12px;padding:12px;color:#fff;margin:5px 0;text-align:center;font-weight:700}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center}
 table{width:100%;border-collapse:collapse}
 th{color:#6e7a8a;text-align:center;padding:10px 4px;border-bottom:1px solid #1e2636;font-size:10px;text-transform:uppercase}
 th:nth-child(2){text-align:left}
@@ -37,6 +39,8 @@ td:nth-child(2){text-align:left;font-weight:700}
 .team-cell{display:flex;align-items:center;gap:10px}
 #loginModal{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:50}
 #loginModal.show{display:flex!important}
+.scoreBox{background:#0e121d;border:2px solid #238636;border-radius:14px;padding:14px}
+.resultTag{font-size:10px;padding:3px 8px;border-radius:20px;background:#238636;color:#fff;margin-left:8px}
 </style>
 </head>
 <body>
@@ -49,20 +53,49 @@ td:nth-child(2){text-align:left;font-weight:700}
 <div class="tab active" id="tabF" onclick="switchTab('fixtures')">Fixtures</div>
 <div class="tab" id="tabT" onclick="switchTab('table')">Table</div>
 </div>
-<div id="viewFixtures"><div class="card"><h3>All Matches - Season Fixtures <span id="fixCount"></span></h3><div id="fixtureList"></div></div></div>
+<div id="viewFixtures"><div class="card"><h3>All Matches <span id="fixCount"></span></h3><div id="fixtureList"></div></div></div>
 <div id="viewTable" class="hidden">
-<div class="card"><h3>League Table - Auto Sorted</h3>
+<div class="card"><h3>League Table - Auto Updated</h3>
 <table><thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>PTS</th></tr></thead><tbody id="tableBody"></tbody></table>
+<p style="font-size:11px;color:#6e7a8a;margin-top:10px">Table updates automatically when you enter score!</p>
 </div>
 </div>
 <div id="adminPanel" class="hidden">
-<div class="card" style="border-color:#1f6feb"><h3>Add New Game</h3><div class="grid2"><select id="selA"></select><select id="selB"></select></div><div class="grid2"><input class="input" id="fDate" type="date"><input class="input" id="fTime" type="time"></div><button class="btn" style="margin-top:6px" onclick="addFixture()">+ Add Fixture</button></div>
-<div class="card"><h3>Manage Fixtures <button class="btn btn-small btn-danger" onclick="clearAllFixtures()" style="float:right">Clear All</button></h3><div id="adminList"></div></div>
-<div class="card" style="border-color:#238636"><h3>Update Table Points</h3><select id="rankSel"></select><div class="grid2"><input class="input" id="rP" type="number" placeholder="Played"><input class="input" id="rW" type="number" placeholder="Won"></div><div class="grid2"><input class="input" id="rD" type="number" placeholder="Draw"><input class="input" id="rL" type="number" placeholder="Lost"><input class="input" id="rPts" type="number" placeholder="Points"></div><button class="btn" style="margin-top:6px;background:#238636" onclick="saveRank()">Save & Auto-Sort Table</button><button class="btn btn-ghost" style="margin-top:8px" onclick="resetTable()">Reset Table to 0</button></div>
+
+<div class="card" style="border-color:#238636">
+<h3>⚡ AUTO UPDATE - Enter Match Result</h3>
+<p style="font-size:12px;color:#8b949e;margin-bottom:10px">Just pick who played who and the score, table will auto-update!</p>
+
+<div class="scoreBox">
+<div class="grid2">
+<div>
+<label style="font-size:11px;color:#8b949e">Home Team</label>
+<select id="resA"></select>
+</div>
+<div>
+<label style="font-size:11px;color:#8b949e">Away Team</label>
+<select id="resB"></select>
+</div>
+</div>
+
+<div class="grid3" style="margin-top:12px">
+<input class="input" id="scoreA" type="number" placeholder="0" style="font-size:20px">
+<span style="font-weight:900;text-align:center">VS</span>
+<input class="input" id="scoreB" type="number" placeholder="0" style="font-size:20px">
+</div>
+
+<button class="btn btn-green" style="margin-top:14px" onclick="saveResult()">✅ Save Result & Auto-Update Table</button>
+<p id="preview" style="text-align:center;font-size:12px;color:#6e7a8a;margin-top:8px"></p>
+</div>
+</div>
+
+<div class="card" style="border-color:#1f6feb"><h3>Add New Fixture</h3><div class="grid2"><select id="selA"></select><select id="selB"></select></div><div class="grid2"><input class="input" id="fDate" type="date"><input class="input" id="fTime" type="time"></div><button class="btn" style="margin-top:6px" onclick="addFixture()">+ Add Fixture</button></div>
+<div class="card"><h3>Manage Fixtures</h3><div id="adminList"></div></div>
+<div class="card"><h3>Results History <button class="btn btn-small btn-danger" onclick="clearResults()" style="float:right">Clear All Results</button></h3><div id="resultsList"></div></div>
 <button class="btn btn-ghost" onclick="logout()">Exit Admin</button><div style="height:60px"></div>
 </div>
 </div>
-<div id="loginModal"><div class="card" style="width:90%;max-width:340px"><h3>Admin Login - Enter Password</h3><input class="input" id="pass" type="password" placeholder="Type admin123"><button class="btn" style="margin-top:10px" onclick="login()">Login</button><button class="btn btn-ghost" style="margin-top:8px" onclick="closeAdmin()">Cancel</button><p style="font-size:11px;color:#6e7a8a;text-align:center;margin-top:8px">Password: admin123</p></div></div>
+<div id="loginModal"><div class="card" style="width:90%;max-width:340px"><h3>Admin Login</h3><input class="input" id="pass" type="password" placeholder="admin123"><button class="btn" style="margin-top:10px" onclick="login()">Login</button><button class="btn btn-ghost" style="margin-top:8px" onclick="closeAdmin()">Cancel</button></div></div>
 <script>
 const TEAM_DATA={
 "Reformedbandic":{color:"#ff3b30",short:"RB"},
@@ -91,34 +124,64 @@ let fixtures=[
 {home:"Targeter",away:"Junior",date:"2026-10-05",time:"17:00"},
 {home:"Asmicardo",away:"Drayzen",date:"2026-10-06",time:"15:00"}
 ];
-let table=[
-{team:"Reformedbandic",p:3,w:2,d:1,l:0,pts:7},
-{team:"Junior",p:3,w:2,d:0,l:1,pts:6},
-{team:"Targeter",p:3,w:1,d:1,l:1,pts:4},
-{team:"Asmicardo",p:3,w:1,d:1,l:1,pts:4},
-{team:"Drayzen",p:3,w:0,d:1,l:2,pts:1},
-{team:"Nohope",p:3,w:0,d:0,l:3,pts:0}
-];
+let results=JSON.parse(localStorage.getItem('pl_results')||'[]');
 let savedFix=localStorage.getItem('pl_fix_final');
-let savedTable=localStorage.getItem('pl_table_final');
 if(savedFix){try{fixtures=JSON.parse(savedFix)}catch(e){}}
-if(savedTable){try{table=JSON.parse(savedTable)}catch(e){}}
-let isAdmin=false,cur='fixtures';
 function badge(t){const d=TEAM_DATA[t]||{color:"#333",short:t.substring(0,2)};return `<div class="bdg" style="background:${d.color}">${d.short}</div>`}
-function initSel(){const a=document.getElementById('selA'),b=document.getElementById('selB'),r=document.getElementById('rankSel');a.innerHTML='';b.innerHTML='';r.innerHTML='';TEAMS.forEach(t=>{a.innerHTML+=`<option>${t}</option>`;b.innerHTML+=`<option>${t}</option>`;r.innerHTML+=`<option>${t}</option>`});b.selectedIndex=1}
+function initSel(){
+  const a=document.getElementById('selA'),b=document.getElementById('selB'),ra=document.getElementById('resA'),rb=document.getElementById('resB');
+  a.innerHTML='';b.innerHTML='';ra.innerHTML='';rb.innerHTML='';
+  TEAMS.forEach(t=>{
+    a.innerHTML+=`<option>${t}</option>`;
+    b.innerHTML+=`<option>${t}</option>`;
+    ra.innerHTML+=`<option>${t}</option>`;
+    rb.innerHTML+=`<option>${t}</option>`;
+  });
+  b.selectedIndex=1;rb.selectedIndex=1;
+  ra.addEventListener('change',updatePreview);rb.addEventListener('change',updatePreview);
+  document.getElementById('scoreA').addEventListener('input',updatePreview);
+  document.getElementById('scoreB').addEventListener('input',updatePreview);
+}
+function updatePreview(){
+  const h=document.getElementById('resA').value,aw=document.getElementById('resB').value;
+  const sa=document.getElementById('scoreA').value, sb=document.getElementById('scoreB').value;
+  if(sa!=='' && sb!==''){
+    document.getElementById('preview').innerHTML=`${h} <b>${sa}</b> - <b>${sb}</b> ${aw}`;
+  }else{
+    document.getElementById('preview').textContent='';
+  }
+}
+function getTable(){
+  let tbl=TEAMS.map(t=>({team:t,p:0,w:0,d:0,l:0,pts:0}));
+  results.forEach(r=>{
+    let home=tbl.find(x=>x.team===r.home);
+    let away=tbl.find(x=>x.team===r.away);
+    if(!home||!away)return;
+    home.p++; away.p++;
+    if(r.scoreA>r.scoreB){home.w++;home.pts+=3;away.l++;}
+    else if(r.scoreA<r.scoreB){away.w++;away.pts+=3;home.l++;}
+    else{home.d++;away.d++;home.pts+=1;away.pts+=1;}
+  });
+  return tbl;
+}
+let isAdmin=false,cur='fixtures';
 function switchTab(t){cur=t;document.getElementById('tabF').classList.toggle('active',t==='fixtures');document.getElementById('tabT').classList.toggle('active',t==='table');document.getElementById('viewFixtures').classList.toggle('hidden',t!=='fixtures');document.getElementById('viewTable').classList.toggle('hidden',t!=='table');}
 function render(){
-  const list=document.getElementById('fixtureList'),alist=document.getElementById('adminList');list.innerHTML='';alist.innerHTML='';document.getElementById('fixCount').textContent=`(${fixtures.length} games)`;
+  const list=document.getElementById('fixtureList'),alist=document.getElementById('adminList');list.innerHTML='';alist.innerHTML='';
+  document.getElementById('fixCount').textContent=`(${fixtures.length} games)`;
   fixtures.forEach((f,i)=>{
+    const played=results.find(r=>r.home===f.home && r.away===f.away);
     const row=document.createElement('div');row.className='fixture';
-    row.innerHTML=`<div style="flex:1"><div class="teams">${badge(f.home)}<span>${f.home}</span><span class="vs">VS</span><span>${f.away}</span>${badge(f.away)}</div><div class="meta">${f.date} ${f.time}</div></div>`;
+    let scoreText=played?`<span class="resultTag">${played.scoreA}-${played.scoreB} FT</span>`:'';
+    row.innerHTML=`<div style="flex:1"><div class="teams">${badge(f.home)}<span>${f.home}</span><span class="vs">VS</span><span>${f.away}</span>${badge(f.away)} ${scoreText}</div><div class="meta">${f.date} ${f.time}</div></div>`;
     list.appendChild(row);
-    const ad=document.createElement('div');ad.className='fixture';ad.innerHTML=`<div class="teams" style="font-size:12px">${badge(f.home)}${f.home} <span class="vs">vs</span> ${f.away}</div><div style="display:flex;gap:6px"><button class="btn btn-small btn-danger" onclick="delF(${i})">Delete X</button></div>`;
+    const ad=document.createElement('div');ad.className='fixture';ad.innerHTML=`<div class="teams" style="font-size:12px">${badge(f.home)}${f.home} <span class="vs">vs</span> ${f.away}</div><button class="btn btn-small btn-danger" onclick="delF(${i})">X</button>`;
     alist.appendChild(ad);
   });
-  localStorage.setItem('pl_fix_final',JSON.stringify(fixtures));renderTable();
+  localStorage.setItem('pl_fix_final',JSON.stringify(fixtures));renderTable();renderResults();
 }
 function renderTable(){
+  let table=getTable();
   table.sort((a,b)=>b.pts-a.pts||b.w-a.w);
   const tb=document.getElementById('tableBody');tb.innerHTML='';
   table.forEach((r,i)=>{
@@ -126,40 +189,37 @@ function renderTable(){
     tr.innerHTML=`<td><span class="pos">${i+1}</span></td><td><div class="team-cell">${badge(r.team)}${r.team}</div></td><td>${r.p}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td><td style="font-weight:900;color:#fff;background:#1a1e2b;border-radius:8px">${r.pts}</td>`;
     tb.appendChild(tr);
   });
-  localStorage.setItem('pl_table_final',JSON.stringify(table));
 }
-function openAdmin(){
-  if(isAdmin){showAdmin();return}
-  document.getElementById('loginModal').classList.add('show');
+function renderResults(){
+  const rl=document.getElementById('resultsList');rl.innerHTML='';
+  if(results.length===0){rl.innerHTML='<p style="font-size:12px;color:#6e7a8a">No results yet. Enter first score above!</p>';return;}
+  results.slice().reverse().forEach((r,i)=>{
+    const div=document.createElement('div');div.className='fixture';
+    div.innerHTML=`<div class="teams" style="font-size:12px">${badge(r.home)}${r.home} ${r.scoreA}-${r.scoreB} ${r.away}${badge(r.away)}</div><button class="btn btn-small btn-ghost" onclick="delResult(${results.length-1-i})">Undo</button>`;
+    rl.appendChild(div);
+  });
 }
-function closeAdmin(){
-  document.getElementById('loginModal').classList.remove('show');
-  document.getElementById('pass').value='';
-}
-function showAdmin(){
-  document.getElementById('loginModal').classList.remove('show');
-  document.getElementById('viewFixtures').classList.remove('hidden');
-  document.getElementById('viewTable').classList.remove('hidden');
-  document.getElementById('adminPanel').classList.remove('hidden');
-  document.getElementById('modeBadge').textContent='ADMIN';
-  document.getElementById('modeBadge').style.background='#238636';
-}
-function login(){
-  const p=document.getElementById('pass').value.trim();
-  if(p===ADMIN_PASS){
-    isAdmin=true;
-    closeAdmin();
-    showAdmin();
-  }else{
-    alert('Wrong password! Type: admin123');
-  }
-}
-function logout(){isAdmin=false;document.getElementById('adminPanel').classList.add('hidden');switchTab(cur);document.getElementById('modeBadge').textContent='VIEW';document.getElementById('modeBadge').style.background='#1f6feb';}
+function openAdmin(){if(isAdmin){showAdmin();return}document.getElementById('loginModal').classList.add('show');}
+function closeAdmin(){document.getElementById('loginModal').classList.remove('show');}
+function showAdmin(){document.getElementById('loginModal').classList.remove('show');document.getElementById('viewFixtures').classList.remove('hidden');document.getElementById('viewTable').classList.remove('hidden');document.getElementById('adminPanel').classList.remove('hidden');document.getElementById('modeBadge').textContent='ADMIN';}
+function login(){if(document.getElementById('pass').value.trim()===ADMIN_PASS){isAdmin=true;closeAdmin();showAdmin();}else alert('Wrong! admin123');}
+function logout(){isAdmin=false;document.getElementById('adminPanel').classList.add('hidden');switchTab(cur);}
 function addFixture(){const h=document.getElementById('selA').value,a=document.getElementById('selB').value;if(h===a){alert('Different teams!');return}fixtures.push({home:h,away:a,date:document.getElementById('fDate').value||'2026-10-07',time:document.getElementById('fTime').value||'15:00'});render();}
-function delF(i){fixtures.splice(i,1);render();alert('Deleted!');}
-function clearAllFixtures(){if(confirm('Delete ALL fixtures?')){fixtures=[];localStorage.removeItem('pl_fix_final');render();}}
-function resetTable(){if(confirm('Reset table to 0 points?')){table=TEAMS.map(t=>({team:t,p:0,w:0,d:0,l:0,pts:0}));renderTable();}}
-function saveRank(){const team=document.getElementById('rankSel').value;const idx=table.findIndex(x=>x.team===team);table[idx]={team,p:+document.getElementById('rP').value||0,w:+document.getElementById('rW').value||0,d:+document.getElementById('rD').value||0,l:+document.getElementById('rL').value||0,pts:+document.getElementById('rPts').value||0};renderTable();alert(team+' saved!');}
+function delF(i){fixtures.splice(i,1);render();}
+function saveResult(){
+  const home=document.getElementById('resA').value,away=document.getElementById('resB').value;
+  const sa=document.getElementById('scoreA').value, sb=document.getElementById('scoreB').value;
+  if(home===away){alert('Pick different teams!');return}
+  if(sa===''||sb===''){alert('Enter both scores! e.g. 2 and 1');return}
+  const scoreA=parseInt(sa),scoreB=parseInt(sb);
+  results.push({home,away,scoreA,scoreB,date:new Date().toISOString()});
+  localStorage.setItem('pl_results',JSON.stringify(results));
+  document.getElementById('scoreA').value='';document.getElementById('scoreB').value='';
+  updatePreview();render();
+  alert(`Saved! ${home} ${scoreA}-${scoreB} ${away} -> Table updated automatically!`);
+}
+function delResult(idx){if(confirm('Undo this result? Table will auto-update')){results.splice(idx,1);localStorage.setItem('pl_results',JSON.stringify(results));render();}}
+function clearResults(){if(confirm('Clear ALL results? Table will go back to 0')){results=[];localStorage.removeItem('pl_results');render();}}
 initSel();render();
 </script>
 </body>
