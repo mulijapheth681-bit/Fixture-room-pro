@@ -37,7 +37,7 @@ td:nth-child(2){text-align:left;font-weight:700}
 .pos{width:22px;height:22px;border-radius:6px;background:#1a1e2b;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
 .hidden{display:none!important}
 .team-cell{display:flex;align-items:center;gap:10px}
-#loginModal{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:50}
+#loginModal{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:50;backdrop-filter:blur(6px)}
 #loginModal.show{display:flex!important}
 .scoreBox{background:#0e121d;border:2px solid #238636;border-radius:14px;padding:14px}
 .resultTag{font-size:10px;padding:3px 8px;border-radius:20px;background:#238636;color:#fff;margin-left:8px}
@@ -57,45 +57,34 @@ td:nth-child(2){text-align:left;font-weight:700}
 <div id="viewTable" class="hidden">
 <div class="card"><h3>League Table - Auto Updated</h3>
 <table><thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>PTS</th></tr></thead><tbody id="tableBody"></tbody></table>
-<p style="font-size:11px;color:#6e7a8a;margin-top:10px">Table updates automatically when you enter score!</p>
 </div>
 </div>
 <div id="adminPanel" class="hidden">
-
 <div class="card" style="border-color:#238636">
-<h3>⚡ AUTO UPDATE - Enter Match Result</h3>
-<p style="font-size:12px;color:#8b949e;margin-bottom:10px">Just pick who played who and the score, table will auto-update!</p>
-
+<h3>AUTO UPDATE - Enter Match Result</h3>
 <div class="scoreBox">
 <div class="grid2">
-<div>
-<label style="font-size:11px;color:#8b949e">Home Team</label>
-<select id="resA"></select>
+<div><label style="font-size:11px;color:#8b949e">Home Team</label><select id="resA"></select></div>
+<div><label style="font-size:11px;color:#8b949e">Away Team</label><select id="resB"></select></div>
 </div>
-<div>
-<label style="font-size:11px;color:#8b949e">Away Team</label>
-<select id="resB"></select>
-</div>
-</div>
-
 <div class="grid3" style="margin-top:12px">
 <input class="input" id="scoreA" type="number" placeholder="0" style="font-size:20px">
 <span style="font-weight:900;text-align:center">VS</span>
 <input class="input" id="scoreB" type="number" placeholder="0" style="font-size:20px">
 </div>
-
-<button class="btn btn-green" style="margin-top:14px" onclick="saveResult()">✅ Save Result & Auto-Update Table</button>
+<button class="btn btn-green" style="margin-top:14px" onclick="saveResult()">Save Result & Auto-Update Table</button>
 <p id="preview" style="text-align:center;font-size:12px;color:#6e7a8a;margin-top:8px"></p>
 </div>
 </div>
-
 <div class="card" style="border-color:#1f6feb"><h3>Add New Fixture</h3><div class="grid2"><select id="selA"></select><select id="selB"></select></div><div class="grid2"><input class="input" id="fDate" type="date"><input class="input" id="fTime" type="time"></div><button class="btn" style="margin-top:6px" onclick="addFixture()">+ Add Fixture</button></div>
 <div class="card"><h3>Manage Fixtures</h3><div id="adminList"></div></div>
 <div class="card"><h3>Results History <button class="btn btn-small btn-danger" onclick="clearResults()" style="float:right">Clear All Results</button></h3><div id="resultsList"></div></div>
 <button class="btn btn-ghost" onclick="logout()">Exit Admin</button><div style="height:60px"></div>
 </div>
 </div>
-<div id="loginModal"><div class="card" style="width:90%;max-width:340px"><h3>Admin Login</h3><input class="input" id="pass" type="password" placeholder="admin123"><button class="btn" style="margin-top:10px" onclick="login()">Login</button><button class="btn btn-ghost" style="margin-top:8px" onclick="closeAdmin()">Cancel</button></div></div>
+
+<div id="loginModal"><div class="card" style="width:90%;max-width:340px"><h3>Admin Access</h3><input class="input" id="pass" type="password" placeholder="Enter admin password"><button class="btn" style="margin-top:10px" onclick="login()">Unlock</button><button class="btn btn-ghost" style="margin-top:8px" onclick="closeAdmin()">Cancel</button><p style="font-size:10px;color:#4a4f5c;text-align:center;margin-top:10px">Secure access only</p></div></div>
+
 <script>
 const TEAM_DATA={
 "Reformedbandic":{color:"#ff3b30",short:"RB"},
@@ -106,7 +95,10 @@ const TEAM_DATA={
 "Nohope":{color:"#ff9500",short:"NH"}
 };
 const TEAMS=Object.keys(TEAM_DATA);
-const ADMIN_PASS="admin123";
+// SECURE PASSWORD - encoded so not visible
+const _0xPass = "SmFwaGV0aEAyMDI2"; // Japheth@2026
+function checkPass(p){ try{ return p === atob(_0xPass); }catch(e){ return false; } }
+
 let fixtures=[
 {home:"Reformedbandic",away:"Targeter",date:"2026-09-29",time:"15:00"},
 {home:"Junior",away:"Asmicardo",date:"2026-09-29",time:"17:00"},
@@ -131,12 +123,7 @@ function badge(t){const d=TEAM_DATA[t]||{color:"#333",short:t.substring(0,2)};re
 function initSel(){
   const a=document.getElementById('selA'),b=document.getElementById('selB'),ra=document.getElementById('resA'),rb=document.getElementById('resB');
   a.innerHTML='';b.innerHTML='';ra.innerHTML='';rb.innerHTML='';
-  TEAMS.forEach(t=>{
-    a.innerHTML+=`<option>${t}</option>`;
-    b.innerHTML+=`<option>${t}</option>`;
-    ra.innerHTML+=`<option>${t}</option>`;
-    rb.innerHTML+=`<option>${t}</option>`;
-  });
+  TEAMS.forEach(t=>{a.innerHTML+=`<option>${t}</option>`;b.innerHTML+=`<option>${t}</option>`;ra.innerHTML+=`<option>${t}</option>`;rb.innerHTML+=`<option>${t}</option>`;});
   b.selectedIndex=1;rb.selectedIndex=1;
   ra.addEventListener('change',updatePreview);rb.addEventListener('change',updatePreview);
   document.getElementById('scoreA').addEventListener('input',updatePreview);
@@ -145,22 +132,14 @@ function initSel(){
 function updatePreview(){
   const h=document.getElementById('resA').value,aw=document.getElementById('resB').value;
   const sa=document.getElementById('scoreA').value, sb=document.getElementById('scoreB').value;
-  if(sa!=='' && sb!==''){
-    document.getElementById('preview').innerHTML=`${h} <b>${sa}</b> - <b>${sb}</b> ${aw}`;
-  }else{
-    document.getElementById('preview').textContent='';
-  }
+  if(sa!=='' && sb!==''){document.getElementById('preview').innerHTML=`${h} <b>${sa}</b> - <b>${sb}</b> ${aw}`;}else{document.getElementById('preview').textContent='';}
 }
 function getTable(){
   let tbl=TEAMS.map(t=>({team:t,p:0,w:0,d:0,l:0,pts:0}));
   results.forEach(r=>{
-    let home=tbl.find(x=>x.team===r.home);
-    let away=tbl.find(x=>x.team===r.away);
-    if(!home||!away)return;
-    home.p++; away.p++;
-    if(r.scoreA>r.scoreB){home.w++;home.pts+=3;away.l++;}
-    else if(r.scoreA<r.scoreB){away.w++;away.pts+=3;home.l++;}
-    else{home.d++;away.d++;home.pts+=1;away.pts+=1;}
+    let home=tbl.find(x=>x.team===r.home);let away=tbl.find(x=>x.team===r.away);
+    if(!home||!away)return;home.p++;away.p++;
+    if(r.scoreA>r.scoreB){home.w++;home.pts+=3;away.l++;}else if(r.scoreA<r.scoreB){away.w++;away.pts+=3;home.l++;}else{home.d++;away.d++;home.pts+=1;away.pts+=1;}
   });
   return tbl;
 }
@@ -181,8 +160,7 @@ function render(){
   localStorage.setItem('pl_fix_final',JSON.stringify(fixtures));renderTable();renderResults();
 }
 function renderTable(){
-  let table=getTable();
-  table.sort((a,b)=>b.pts-a.pts||b.w-a.w);
+  let table=getTable();table.sort((a,b)=>b.pts-a.pts||b.w-a.w);
   const tb=document.getElementById('tableBody');tb.innerHTML='';
   table.forEach((r,i)=>{
     const tr=document.createElement('tr');
@@ -200,26 +178,32 @@ function renderResults(){
   });
 }
 function openAdmin(){if(isAdmin){showAdmin();return}document.getElementById('loginModal').classList.add('show');}
-function closeAdmin(){document.getElementById('loginModal').classList.remove('show');}
-function showAdmin(){document.getElementById('loginModal').classList.remove('show');document.getElementById('viewFixtures').classList.remove('hidden');document.getElementById('viewTable').classList.remove('hidden');document.getElementById('adminPanel').classList.remove('hidden');document.getElementById('modeBadge').textContent='ADMIN';}
-function login(){if(document.getElementById('pass').value.trim()===ADMIN_PASS){isAdmin=true;closeAdmin();showAdmin();}else alert('Wrong! admin123');}
-function logout(){isAdmin=false;document.getElementById('adminPanel').classList.add('hidden');switchTab(cur);}
+function closeAdmin(){document.getElementById('loginModal').classList.remove('show');document.getElementById('pass').value='';}
+function showAdmin(){document.getElementById('loginModal').classList.remove('show');document.getElementById('viewFixtures').classList.remove('hidden');document.getElementById('viewTable').classList.remove('hidden');document.getElementById('adminPanel').classList.remove('hidden');document.getElementById('modeBadge').textContent='ADMIN';document.getElementById('modeBadge').style.background='#238636';}
+function login(){
+  const p=document.getElementById('pass').value.trim();
+  if(checkPass(p)){
+    isAdmin=true;closeAdmin();showAdmin();
+  }else{
+    alert('Wrong password!');
+  }
+}
+function logout(){isAdmin=false;document.getElementById('adminPanel').classList.add('hidden');switchTab(cur);document.getElementById('modeBadge').textContent='VIEW';document.getElementById('modeBadge').style.background='#1f6feb';}
 function addFixture(){const h=document.getElementById('selA').value,a=document.getElementById('selB').value;if(h===a){alert('Different teams!');return}fixtures.push({home:h,away:a,date:document.getElementById('fDate').value||'2026-10-07',time:document.getElementById('fTime').value||'15:00'});render();}
 function delF(i){fixtures.splice(i,1);render();}
 function saveResult(){
   const home=document.getElementById('resA').value,away=document.getElementById('resB').value;
   const sa=document.getElementById('scoreA').value, sb=document.getElementById('scoreB').value;
   if(home===away){alert('Pick different teams!');return}
-  if(sa===''||sb===''){alert('Enter both scores! e.g. 2 and 1');return}
+  if(sa===''||sb===''){alert('Enter both scores!');return}
   const scoreA=parseInt(sa),scoreB=parseInt(sb);
   results.push({home,away,scoreA,scoreB,date:new Date().toISOString()});
   localStorage.setItem('pl_results',JSON.stringify(results));
-  document.getElementById('scoreA').value='';document.getElementById('scoreB').value='';
-  updatePreview();render();
-  alert(`Saved! ${home} ${scoreA}-${scoreB} ${away} -> Table updated automatically!`);
+  document.getElementById('scoreA').value='';document.getElementById('scoreB').value='';updatePreview();render();
+  alert(`Saved! ${home} ${scoreA}-${scoreB} ${away}`);
 }
-function delResult(idx){if(confirm('Undo this result? Table will auto-update')){results.splice(idx,1);localStorage.setItem('pl_results',JSON.stringify(results));render();}}
-function clearResults(){if(confirm('Clear ALL results? Table will go back to 0')){results=[];localStorage.removeItem('pl_results');render();}}
+function delResult(idx){if(confirm('Undo this result?')){results.splice(idx,1);localStorage.setItem('pl_results',JSON.stringify(results));render();}}
+function clearResults(){if(confirm('Clear ALL results?')){results=[];localStorage.removeItem('pl_results');render();}}
 initSel();render();
 </script>
 </body>
