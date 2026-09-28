@@ -1,259 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Football League Manager</title>
-
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f1f5f9;
-      color: #172033;
-    }
-
-    header {
-      background: #123c2b;
-      color: white;
-      padding: 25px 8%;
-    }
-
-    header h1 { margin: 0 0 8px; }
-    header p { margin: 0; color: #c9e7d4; }
-
-    main {
-      max-width: 1100px;
-      margin: 30px auto;
-      padding: 0 16px;
-    }
-
-    .card {
-      background: white;
-      padding: 20px;
-      margin-bottom: 24px;
-      border-radius: 12px;
-      box-shadow: 0 3px 12px #0000000b;
-      overflow-x: auto;
-    }
-
-    h2 { margin-top: 0; }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 600px;
-    }
-
-    th, td {
-      padding: 12px 10px;
-      text-align: center;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    th { background: #edf5ef; }
-    td:nth-child(2), th:nth-child(2) {
-      text-align: left;
-    }
-
-    input {
-      width: 55px;
-      padding: 8px;
-      text-align: center;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      font-size: 16px;
-    }
-
-    button {
-      background: #176b43;
-      color: white;
-      padding: 10px 16px;
-      border: 0;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    button:hover { background: #105332; }
-
-    .points { font-weight: bold; color: #176b43; }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #64748b;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fixture Room Pro</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{background:#0b0e14;color:#eee}
+.h{background:#11141d;padding:14px 16px;display:flex;justify-content:space-between;position:sticky;top:0;z-index:9;border-bottom:1px solid #222}
+.btn{background:#1f6feb;color:#fff;border:0;padding:10px 14px;border-radius:10px;font-weight:800;cursor:pointer}
+.c{max-width:800px;margin:auto;padding:12px}
+.card{background:#151a27;border:1px solid #1e2636;border-radius:16px;padding:14px;margin:10px 0}
+.tabs{display:flex;gap:8px;margin-bottom:10px}
+.tab{flex:1;padding:12px;text-align:center;background:#151a27;border-radius:12px;border:1px solid #222;color:#777;font-weight:800;cursor:pointer}
+.tab.a{background:#fff;color:#000}
+.f{background:#0e121d;border:1px solid #222;border-radius:14px;padding:12px;margin:8px 0;display:flex;justify-content:space-between;align-items:center}
+.bdg{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;flex-shrink:0;overflow:hidden;background:#222}
+.bdg img{width:100%;height:100%;object-fit:cover}
+.t{font-weight:800;display:flex;align-items:center;gap:8px}
+.hidden{display:none!important}
+#log{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:99}
+#log.s{display:flex}
+table{width:100%;border-collapse:collapse}
+th{color:#666;font-size:10px;padding:8px;border-bottom:1px solid #222;text-align:center}
+th:nth-child(2){text-align:left}
+td{padding:10px 4px;border-bottom:1px solid #1a1e2b;text-align:center;font-size:13px}
+td:nth-child(2){text-align:left;font-weight:700}
+.in{width:100%;background:#0e121d;border:1px solid #222;border-radius:10px;padding:10px;color:#fff;margin:4px 0}
+</style>
 </head>
-
 <body>
-
-<header>
-  <h1>⚽ Football League Manager</h1>
-  <p>Manage fixtures. Record scores. Track the league.</p>
-</header>
-
-<main>
-  <section class="card">
-    <h2>🏆 League Standings</h2>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Pos</th><th>Team</th><th>MP</th>
-          <th>W</th><th>D</th><th>L</th>
-          <th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
-        </tr>
-      </thead>
-      <tbody id="standings"></tbody>
-    </table>
-  </section>
-
-  <section class="card">
-    <h2>📅 Match Fixtures & Results</h2>
-    <p>Enter the home and away scores. Standings update automatically.</p>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Round</th><th>Home Team</th>
-          <th>Score</th><th>Away Team</th>
-        </tr>
-      </thead>
-      <tbody id="fixtures"></tbody>
-    </table>
-  </section>
-</main>
-
-<footer>Football League Manager © 2026</footer>
-
+<div class="h"><b>PREMIER LEAGUE PRO</b><div><span id="mb" style="background:#1f6feb;padding:4px 10px;border-radius:20px;font-size:11px">VIEW</span> <button class="btn" onclick="openA()" style="padding:6px 10px;font-size:12px">Admin</button></div></div>
+<div class="c">
+<div class="tabs"><div class="tab a" id="tF" onclick="sw('f')">Fixtures</div><div class="tab" id="tT" onclick="sw('t')">Table</div></div>
+<div id="vF"><div class="card"><h3 style="font-size:12px;color:#777">ALL MATCHES <span id="fc"></span></h3><div id="fl"></div></div></div>
+<div id="vT" class="hidden"><div class="card"><h3 style="font-size:12px;color:#777">LEAGUE TABLE</h3><table><thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>PTS</th></tr></thead><tbody id="tb"></tbody></table></div></div>
+<div id="ap" class="hidden">
+<div class="card" style="border-color:#238636"><h3 style="color:#238636">Enter Result - Auto Updates</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><select id="rA" class="in"></select><select id="rB" class="in"></select></div><div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-top:8px"><input id="sA" type="number" class="in" style="font-size:22px" placeholder="0"><b>VS</b><input id="sB" type="number" class="in" style="font-size:22px" placeholder="0"></div><button class="btn" style="background:#238636;width:100%;margin-top:10px" onclick="saveR()">Save Result</button></div>
+<div class="card"><h3>Add Fixture</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><select id="sA2" class="in"></select><select id="sB2" class="in"></select></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><input id="fd" type="date" class="in"><input id="ft" type="time" class="in"></div><button class="btn" style="width:100%;margin-top:6px" onclick="addF()">+ Add Fixture</button></div>
+<div class="card"><div id="al"></div></div>
+<button class="btn" style="background:#333;width:100%" onclick="logout()">Exit Admin</button></div>
+</div>
+<div id="log"><div class="card" style="width:90%;max-width:320px"><h3>Admin Password</h3><input id="pw" type="password" class="in" placeholder="Password"><button class="btn" style="width:100%;margin-top:8px" onclick="login()">Unlock</button><button class="btn" style="width:100%;margin-top:6px;background:#333" onclick="closeA()">Cancel</button></div></div>
 <script>
-  // Our sample teams
-  const teams = ["Arsenal", "Chelsea", "Liverpool", "Man City"];
-
-  // Each match has a round, two teams, and scores
-  const matches = [
-    { round: 1, home: "Arsenal", away: "Chelsea", hs: "", as: "" },
-    { round: 1, home: "Liverpool", away: "Man City", hs: "", as: "" },
-    { round: 2, home: "Arsenal", away: "Liverpool", hs: "", as: "" },
-    { round: 2, home: "Chelsea", away: "Man City", hs: "", as: "" },
-    { round: 3, home: "Man City", away: "Arsenal", hs: "", as: "" },
-    { round: 3, home: "Chelsea", away: "Liverpool", hs: "", as: "" }
-  ];
-
-  // Display all fixtures
-  function showFixtures() {
-    const table = document.getElementById("fixtures");
-
-    table.innerHTML = matches.map((m, i) => `
-      <tr>
-        <td>${m.round}</td>
-        <td>${m.home}</td>
-        <td>
-          <input type="number" min="0" step="1"
-            value="${m.hs}" aria-label="Home goals"
-            onchange="updateScore(${i}, 'hs', this.value)">
-          -
-          <input type="number" min="0" step="1"
-            value="${m.as}" aria-label="Away goals"
-            onchange="updateScore(${i}, 'as', this.value)">
-        </td>
-        <td>${m.away}</td>
-      </tr>
-    `).join("");
-  }
-
-  // Save a score and refresh the table
-  function updateScore(index, side, value) {
-    if (value !== "" &&
-        (!Number.isInteger(Number(value)) || Number(value) < 0)) {
-      alert("Enter a whole number, 0 or higher.");
-      showFixtures();
-      return;
-    }
-
-    matches[index][side] = value;
-    showStandings();
-  }
-
-  // Calculate league statistics from completed matches
-  function showStandings() {
-    const stats = {};
-
-    teams.forEach(team => {
-      stats[team] = {
-        mp: 0, w: 0, d: 0, l: 0,
-        gf: 0, ga: 0, pts: 0
-      };
-    });
-
-    matches.forEach(m => {
-      // Ignore matches without both scores
-      if (m.hs === "" || m.as === "") return;
-
-      const h = Number(m.hs);
-      const a = Number(m.as);
-
-      const home = stats[m.home];
-      const away = stats[m.away];
-
-      home.mp++;
-      away.mp++;
-
-      home.gf += h;
-      home.ga += a;
-      away.gf += a;
-      away.ga += h;
-
-      if (h > a) {
-        home.w++;
-        home.pts += 3;
-        away.l++;
-      } else if (h < a) {
-        away.w++;
-        away.pts += 3;
-        home.l++;
-      } else {
-        home.d++;
-        away.d++;
-        home.pts++;
-        away.pts++;
-      }
-    });
-
-    // Sort by points, goal difference, then goals scored
-    const sorted = teams.slice().sort((a, b) =>
-      stats[b].pts - stats[a].pts ||
-      (stats[b].gf - stats[b].ga) -
-      (stats[a].gf - stats[a].ga) ||
-      stats[b].gf - stats[a].gf
-    );
-
-    document.getElementById("standings").innerHTML =
-      sorted.map((team, i) => {
-        const s = stats[team];
-        const gd = s.gf - s.ga;
-
-        return `
-          <tr>
-            <td>${i + 1}</td>
-            <td><strong>${team}</strong></td>
-            <td>${s.mp}</td><td>${s.w}</td>
-            <td>${s.d}</td><td>${s.l}</td>
-            <td>${s.gf}</td><td>${s.ga}</td>
-            <td>${gd > 0 ? "+" : ""}${gd}</td>
-            <td class="points">${s.pts}</td>
-          </tr>
-        `;
-      }).join("");
-  }
-
-  // Start the application
-  showFixtures();
-  showStandings();
+const D={"Reformedbandic":{c:"#6CABDD",l:"reformedbandic.png",s:"REF"},"Targeter":{c:"#DA020E",l:"targeter.png",s:"TAR"},"Junior":{c:"#132257",l:"junior.png",s:"JUN"},"Asmicardo":{c:"#034694",l:"asmicardo.png",s:"ASM"},"Drayzen":{c:"#C8102E",l:"drayzen.png",s:"DRA"},"Nohope":{c:"#EF0107",l:"nohope.png",s:"NOH"}};
+const T=Object.keys(D);const P="SmFwaGV0aEAyMDI2";
+let fx=[{h:"Reformedbandic",a:"Targeter",d:"2026-09-29",t:"15:00"},{h:"Junior",a:"Asmicardo",d:"2026-09-29",t:"17:00"},{h:"Drayzen",a:"Nohope",d:"2026-09-30",t:"15:00"},{h:"Reformedbandic",a:"Junior",d:"2026-09-30",t:"17:00"},{h:"Targeter",a:"Drayzen",d:"2026-10-01",t:"15:00"},{h:"Asmicardo",a:"Nohope",d:"2026-10-01",t:"17:00"},{h:"Reformedbandic",a:"Asmicardo",d:"2026-10-02",t:"15:00"},{h:"Targeter",a:"Nohope",d:"2026-10-02",t:"17:00"},{h:"Junior",a:"Drayzen",d:"2026-10-03",t:"15:00"},{h:"Reformedbandic",a:"Drayzen",d:"2026-10-03",t:"17:00"},{h:"Targeter",a:"Asmicardo",d:"2026-10-04",t:"15:00"},{h:"Junior",a:"Nohope",d:"2026-10-04",t:"17:00"},{h:"Reformedbandic",a:"Nohope",d:"2026-10-05",t:"15:00"},{h:"Targeter",a:"Junior",d:"2026-10-05",t:"17:00"},{h:"Asmicardo",a:"Drayzen",d:"2026-10-06",t:"15:00"}];
+let rs=JSON.parse(localStorage.getItem('pl_r')||'[]');
+function bdg(x){let d=D[x];return `<div class="bdg" style="background:${d.c}"><img src="${d.l}" onerror="this.style.display='none';this.parentElement.innerHTML='${d.s}'"></div>`}
+function init(){let sA=document.getElementById('sA2'),sB=document.getElementById('sB2'),rA=document.getElementById('rA'),rB=document.getElementById('rB');sA.innerHTML='';sB.innerHTML='';rA.innerHTML='';rB.innerHTML='';T.forEach(t=>{sA.innerHTML+=`<option>${t}</option>`;sB.innerHTML+=`<option>${t}</option>`;rA.innerHTML+=`<option>${t}</option>`;rB.innerHTML+=`<option>${t}</option>`});sB.selectedIndex=1;rB.selectedIndex=1}
+function tbl(){let m=T.map(t=>({t,p:0,w:0,d:0,l:0,pts:0}));rs.forEach(r=>{let H=m.find(x=>x.t==r.h),A=m.find(x=>x.t==r.a);if(!H||!A)return;H.p++;A.p++;if(r.sa>r.sb){H.w++;H.pts+=3;A.l++}else if(r.sa<r.sb){A.w++;A.pts+=3;H.l++}else{H.d++;A.d++;H.pts++;A.pts++}});return m}
+function sw(x){document.getElementById('tF').classList.toggle('a',x=='f');document.getElementById('tT').classList.toggle('a',x=='t');document.getElementById('vF').classList.toggle('hidden',x!='f');document.getElementById('vT').classList.toggle('hidden',x!='t')}
+function render(){let fl=document.getElementById('fl'),al=document.getElementById('al'),tb=document.getElementById('tb');fl.innerHTML='';al.innerHTML='';document.getElementById('fc').textContent='('+fx.length+')';fx.forEach((f,i)=>{let p=rs.find(r=>r.h==f.h&&r.a==f.a);let sc=p?`<span style="background:#238636;color:#fff;padding:2px 8px;border-radius:20px;font-size:10px;margin-left:6px">${p.sa}-${p.sb}</span>`:'';fl.innerHTML+=`<div class="f"><div><div class="t">${bdg(f.h)} ${f.h} <span style="color:#555">vs</span> ${f.a} ${bdg(f.a)} ${sc}</div><div style="font-size:11px;color:#666;margin-top:4px">${f.d} ${f.t}</div></div></div>`;al.innerHTML+=`<div class="f"><div class="t" style="font-size:12px">${bdg(f.h)}${f.h} vs ${f.a}</div><button class="btn" style="background:#da3633;padding:4px 8px;font-size:11px" onclick="delF(${i})">X</button></div>`});let t=tbl().sort((a,b)=>b.pts-a.pts);tb.innerHTML='';t.forEach((r,i)=>{tb.innerHTML+=`<tr><td>${i+1}</td><td><div style="display:flex;align-items:center;gap:8px">${bdg(r.t)}${r.t}</div></td><td>${r.p}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td><td style="font-weight:900;background:#1a1e2b;border-radius:6px">${r.pts}</td></tr>`})}
+let admin=false;function openA(){if(admin){document.getElementById('ap').classList.remove('hidden');return}document.getElementById('log').classList.add('s')}function closeA(){document.getElementById('log').classList.remove('s')}function login(){if(atob(P)==document.getElementById('pw').value.trim()){admin=true;closeA();document.getElementById('ap').classList.remove('hidden');document.getElementById('mb').textContent='ADMIN';document.getElementById('mb').style.background='#238636'}else alert('Wrong!')}function logout(){admin=false;document.getElementById('ap').classList.add('hidden');document.getElementById('mb').textContent='VIEW';document.getElementById('mb').style.background='#1f6feb'}function addF(){let h=document.getElementById('sA2').value,a=document.getElementById('sB2').value;if(h==a)return alert('Different');fx.push({h,a,d:document.getElementById('fd').value||'2026-10-07',t:document.getElementById('ft').value||'15:00'});render()}function delF(i){fx.splice(i,1);render()}function saveR(){let h=document.getElementById('rA').value,a=document.getElementById('rB').value,sa=document.getElementById('sA').value,sb=document.getElementById('sB').value;if(h==a)return alert('Different');if(sa===''||sb==='')return alert('Enter scores');rs.push({h,a,sa:parseInt(sa),sb:parseInt(sb)});localStorage.setItem('pl_r',JSON.stringify(rs));document.getElementById('sA').value='';document.getElementById('sB').value='';render();sw('t')}
+init();render();
 </script>
-
 </body>
 </html>
