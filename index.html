@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fixture Room - Admin Only</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,sans-serif}
+body{background:#0f1115;color:#e6e6e6;min-height:100vh}
+.header{background:#161a22;border-bottom:1px solid #232836;padding:14px 16px;position:sticky;top:0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:700}
+.badge{font-size:11px;background:#1f6feb;color:#fff;padding:4px 8px;border-radius:20px}
+.btn{background:#1f6feb;color:#fff;border:0;padding:10px 16px;border-radius:10px;font-weight:600;cursor:pointer}
+.btn-ghost{background:#21262d;color:#c9d1d9}
+.btn-small{padding:7px 12px;font-size:13px}
+.container{max-width:900px;margin:0 auto;padding:16px}
+.card{background:#161a22;border:1px solid #232836;border-radius:14px;padding:16px;margin-bottom:14px}
+.card h3{font-size:15px;margin-bottom:10px;color:#8b949e}
+.fixture{display:flex;justify-content:space-between;align-items:center;background:#0d1117;border:1px solid #21262d;border-radius:12px;padding:12px;margin:8px 0}
+.team{font-weight:600;font-size:14px}
+.vs{color:#8b949e;font-size:12px;margin:0 6px}
+.input{width:100%;background:#0d1117;border:1px solid #30363d;border-radius:10px;padding:11px 12px;color:#fff;margin:6px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hidden{display:none}
+.login-box{max-width:360px;margin:60px auto}
+@media(max-width:600px){.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>⚽ Fixture Room</h1>
+<div style="display:flex;gap:8px;align-items:center">
+<span class="badge" id="modeBadge">VIEW ONLY</span>
+<button class="btn btn-small" onclick="openAdmin()">Admin</button>
+</div>
+</div>
+<div class="container">
+<div id="viewMode">
+<div class="card">
+<h3>Upcoming Fixtures</h3>
+<div id="fixtureList"></div>
+<p id="emptyMsg" style="color:#8b949e;font-size:13px;margin-top:10px">No fixtures yet. Admin needs to add.</p>
+</div>
+<div class="card">
+<h3>Share Link</h3>
+<p style="font-size:12px;color:#58a6ff;word-break:break-all" id="shareLink"></p>
+<p style="font-size:13px;color:#8b949e;margin-top:8px">View-only for members. Fits perfect on phone.</p>
+</div>
+</div>
+<div id="adminPanel" class="hidden">
+<div class="card">
+<h3>Add New Fixture</h3>
+<div class="grid2">
+<input class="input" id="teamA" placeholder="Team A">
+<input class="input" id="teamB" placeholder="Team B">
+<input class="input" id="date" type="date">
+<input class="input" id="time" type="time">
+</div>
+<input class="input" id="venue" placeholder="Venue">
+<button class="btn" style="width:100%;margin-top:10px" onclick="addFixture()">+ Add Fixture</button>
+</div>
+<div class="card">
+<h3>Manage Fixtures <span id="count"></span></h3>
+<div id="adminList"></div>
+</div>
+<button class="btn btn-ghost" style="width:100%" onclick="logout()">Exit Admin Mode</button>
+</div>
+</div>
+<div id="loginModal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:20">
+<div class="card login-box" style="width:90%">
+<h3>Admin Login</h3>
+<p style="font-size:13px;color:#8b949e;margin:6px 0 10px">Enter password to edit.</p>
+<input class="input" id="pass" type="password" placeholder="Password">
+<button class="btn" style="width:100%;margin-top:10px" onclick="login()">Login</button>
+<button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="closeAdmin()">Cancel</button>
+<p style="font-size:11px;color:#8b949e;margin-top:10px;text-align:center">Default: admin123</p>
+</div>
+</div>
+<script>
+const ADMIN_PASS="admin123";
+let fixtures=JSON.parse(localStorage.getItem('fixtures_v2')||'[]');
+let isAdmin=false;
+function render(){
+  const list=document.getElementById('fixtureList');
+  const adminList=document.getElementById('adminList');
+  const emptyMsg=document.getElementById('emptyMsg');
+  list.innerHTML='';adminList.innerHTML='';
+  document.getElementById('count').textContent=`(${fixtures.length})`;
+  document.getElementById('shareLink').textContent=window.location.href;
+  emptyMsg.style.display=fixtures.length===0?'block':'none';
+  fixtures.forEach((f,i)=>{
+    const d=document.createElement('div');d.className='fixture';
+    d.innerHTML=`<div><span class="team">${f.teamA}</span><span class="vs">vs</span><span class="team">${f.teamB}</span><div style="font-size:11px;color:#8b949e;margin-top:3px">${f.date||''} ${f.time||''} ${f.venue?'• '+f.venue:''}</div></div>`;
+    list.appendChild(d);
+    const ad=document.createElement('div');ad.className='fixture';
+    ad.innerHTML=`<div><span class="team">${f.teamA}</span><span class="vs">vs</span><span class="team">${f.teamB}</span></div><div><button class="btn btn-small btn-ghost" onclick="delFixture(${i})">Delete</button></div>`;
+    adminList.appendChild(ad);
+  });
+  localStorage.setItem('fixtures_v2',JSON.stringify(fixtures));
+}
+function openAdmin(){if(isAdmin){showAdmin();return}document.getElementById('loginModal').classList.remove('hidden');document.getElementById('loginModal').style.display='flex';}
+function closeAdmin(){document.getElementById('loginModal').classList.add('hidden');document.getElementById('loginModal').style.display='none';}
+function showAdmin(){document.getElementById('viewMode').classList.add('hidden');document.getElementById('adminPanel').classList.remove('hidden');document.getElementById('modeBadge').textContent='ADMIN MODE';document.getElementById('modeBadge').style.background='#238636';}
+function login(){if(document.getElementById('pass').value===ADMIN_PASS){isAdmin=true;closeAdmin();showAdmin();document.getElementById('pass').value='';}else alert('Wrong password! Use admin123');}
+function logout(){isAdmin=false;document.getElementById('adminPanel').classList.add('hidden');document.getElementById('viewMode').classList.remove('hidden');document.getElementById('modeBadge').textContent='VIEW ONLY';document.getElementById('modeBadge').style.background='#1f6feb';}
+function addFixture(){const a=document.getElementById('teamA').value.trim(),b=document.getElementById('teamB').value.trim();if(!a||!b){alert('Enter both teams');return}fixtures.push({teamA:a,teamB:b,date:document.getElementById('date').value,time:document.getElementById('time').value,venue:document.getElementById('venue').value.trim()});document.getElementById('teamA').value='';document.getElementById('teamB').value='';document.getElementById('venue').value='';render();}
+function delFixture(i){if(confirm('Delete?')){fixtures.splice(i,1);render();}}
+render();
+</script>
+</body>
+</html>
