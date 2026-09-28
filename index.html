@@ -3,167 +3,140 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Premier League - Fixture Room</title>
+<title>Premier League - 6 Teams</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,sans-serif}
-body{background:#0f1115;color:#e6e6e6;min-height:100vh}
-.header{background:#161a22;border-bottom:1px solid #232836;padding:14px 16px;position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center}
-.header h1{font-size:16px;font-weight:800;letter-spacing:.5px}
-.badge{font-size:11px;background:#1f6feb;color:#fff;padding:4px 8px;border-radius:20px}
-.btn{background:#1f6feb;color:#fff;border:0;padding:11px 16px;border-radius:10px;font-weight:700;cursor:pointer;width:100%}
-.btn-small{padding:6px 10px;font-size:12px;width:auto}
-.btn-ghost{background:#21262d;color:#c9d1d9}
-.container{max-width:800px;margin:0 auto;padding:14px}
-.card{background:#161a22;border:1px solid #232836;border-radius:16px;padding:16px;margin-bottom:12px}
-.card h3{font-size:13px;color:#8b949e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;display:flex;justify-content:space-between}
+body{background:#0b0e14;color:#e6e6e6;min-height:100vh}
+.header{background:#11141d;border-bottom:1px solid #1e2332;padding:14px 16px;position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:15px;font-weight:900;letter-spacing:1px}
+.badge{font-size:11px;background:#1f6feb;color:#fff;padding:4px 10px;border-radius:20px}
+.btn{background:#1f6feb;color:#fff;border:0;padding:12px;border-radius:12px;font-weight:800;cursor:pointer;width:100%}
+.btn-small{padding:6px 10px;font-size:12px;width:auto;border-radius:8px}
+.btn-ghost{background:#1a1e2b;color:#8b949e}
+.btn-danger{background:#da3633;color:#fff}
+.container{max-width:800px;margin:0 auto;padding:12px}
+.card{background:#151a27;border:1px solid #1e2636;border-radius:18px;padding:16px;margin-bottom:12px}
+.card h3{font-size:12px;color:#8b949e;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
 .tabs{display:flex;gap:8px;margin-bottom:12px}
-.tab{flex:1;padding:11px;text-align:center;background:#161a22;border:1px solid #232836;border-radius:12px;cursor:pointer;font-weight:700;color:#8b949e;font-size:13px}
-.tab.active{background:#fff;color:#000;border-color:#fff}
-.fixture{display:flex;justify-content:space-between;align-items:center;background:#0d1117;border:1px solid #21262d;border-radius:14px;padding:14px;margin:10px 0}
-.teams{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px}
-.vs{width:28px;height:28px;background:#21262d;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:#8b949e}
-.meta{font-size:11px;color:#8b949e;margin-top:4px}
-.input,select{width:100%;background:#0d1117;border:1px solid #30363d;border-radius:10px;padding:12px;color:#fff;margin:6px 0;font-size:14px}
+.tab{flex:1;padding:12px;text-align:center;background:#151a27;border:1px solid #1e2636;border-radius:14px;cursor:pointer;font-weight:800;color:#6e7a8a;font-size:13px}
+.tab.active{background:#fff;color:#000}
+.fixture{background:#0e121d;border:1px solid #1e2636;border-radius:16px;padding:14px;margin:10px 0;display:flex;justify-content:space-between;align-items:center}
+.teams{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
+.bdg{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#fff;flex-shrink:0}
+.vs{width:26px;height:26px;background:#1a1e2b;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;color:#6e7a8a;font-weight:700}
+.meta{font-size:11px;color:#6e7a8a;margin-top:5px}
+.input,select{width:100%;background:#0e121d;border:1px solid #1e2636;border-radius:12px;padding:12px;color:#fff;margin:5px 0}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{color:#8b949e;text-align:center;padding:10px 4px;border-bottom:1px solid #232836;font-size:11px}
-th:first-child,th:nth-child(2){text-align:left}
-td{padding:12px 4px;border-bottom:1px solid #1a1e27;text-align:center}
+table{width:100%;border-collapse:collapse}
+th{color:#6e7a8a;text-align:center;padding:10px 4px;border-bottom:1px solid #1e2636;font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+th:nth-child(2){text-align:left}
+td{padding:12px 4px;border-bottom:1px solid #161b2a;text-align:center;font-size:13px}
 td:nth-child(2){text-align:left;font-weight:700}
-.team-row{display:flex;align-items:center;gap:8px}
-.num{width:22px;text-align:center;font-size:12px;color:#8b949e}
+.pos{width:22px;height:22px;border-radius:6px;background:#1a1e2b;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
 .hidden{display:none}
-.badge-live{background:#238636}
+.team-cell{display:flex;align-items:center;gap:10px}
 </style>
 </head>
 <body>
 <div class="header">
-<h1>⚽ PREMIER LEAGUE</h1>
-<div style="display:flex;gap:8px;align-items:center">
-<span class="badge" id="modeBadge">VIEW ONLY</span>
-<button class="btn btn-small" onclick="openAdmin()">Admin</button>
-</div>
+<h1>🏴󠁧󠁢󠁥󠁮󠁧󠁿 PREMIER LEAGUE</h1>
+<div style="display:flex;gap:8px;align-items:center"><span class="badge" id="modeBadge">VIEW</span><button class="btn btn-small" onclick="openAdmin()">Admin</button></div>
 </div>
 <div class="container">
 <div class="tabs">
-<div class="tab active" id="tabF" onclick="switchTab('fixtures')">Fixtures</div>
-<div class="tab" id="tabT" onclick="switchTab('table')">🏆 Table</div>
+<div class="tab active" id="tabF" onclick="switchTab('fixtures')">🎮 Fixtures</div>
+<div class="tab" id="tabT" onclick="switchTab('table')">📊 Table</div>
 </div>
-<div id="viewFixtures">
-<div class="card"><h3>Matchday Fixtures - Who Plays Who</h3><div id="fixtureList"></div></div>
-<div class="card" style="background:#0d1117;border-style:dashed"><h3>6 Teams In League</h3><div id="teamChips" style="display:flex;flex-wrap:wrap;gap:8px"></div></div>
-</div>
+<div id="viewFixtures"><div class="card"><h3>All Matches - Season Fixtures <span id="fixCount"></span></h3><div id="fixtureList"></div></div></div>
 <div id="viewTable" class="hidden">
-<div class="card">
-<h3>Premier League Table</h3>
-<table>
-<thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>PTS</th></tr></thead>
-<tbody id="tableBody"></tbody>
-</table>
+<div class="card"><h3>League Table - Auto Sorted</h3>
+<table><thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>PTS</th></tr></thead><tbody id="tableBody"></tbody></table>
 </div>
 </div>
 <div id="adminPanel" class="hidden">
-<div class="card" style="border-color:#1f6feb">
-<h3>Create Fixture From Your 6 Teams</h3>
-<div class="grid2">
-<select id="selA"></select>
-<select id="selB"></select>
-</div>
-<div class="grid2"><input class="input" id="fDate" type="date"><input class="input" id="fTime" type="time"></div>
-<input class="input" id="fVenue" placeholder="Venue (optional)">
-<button class="btn" style="margin-top:8px" onclick="addFixture()">+ Add Match</button>
-</div>
-<div class="card"><h3>Manage Fixtures</h3><div id="adminList"></div></div>
-<div class="card" style="border-color:#238636">
-<h3>🏆 Update Points - Premier League Table</h3>
-<select id="rankSel"></select>
-<div class="grid2"><input class="input" id="rP" type="number" placeholder="Played"><input class="input" id="rW" type="number" placeholder="Won"></div>
-<div class="grid2"><input class="input" id="rD" type="number" placeholder="Draw"><input class="input" id="rL" type="number" placeholder="Lost"><input class="input" id="rPts" type="number" placeholder="Points"></div>
-<button class="btn" style="margin-top:8px;background:#238636" onclick="saveRank()">💾 Save Points</button>
-</div>
-<button class="btn btn-ghost" onclick="logout()">Exit Admin Mode</button>
-<div style="height:80px"></div>
+<div class="card" style="border-color:#1f6feb"><h3>Add New Game</h3><div class="grid2"><select id="selA"></select><select id="selB"></select></div><div class="grid2"><input class="input" id="fDate" type="date"><input class="input" id="fTime" type="time"></div><button class="btn" style="margin-top:6px" onclick="addFixture()">+ Add Fixture</button></div>
+<div class="card"><h3>Manage Fixtures - Tap X to Delete <button class="btn btn-small btn-danger" onclick="clearAllFixtures()" style="float:right">Clear All</button></h3><div id="adminList"></div></div>
+<div class="card" style="border-color:#238636"><h3>Update Table Points</h3><select id="rankSel"></select><div class="grid2"><input class="input" id="rP" type="number" placeholder="Played"><input class="input" id="rW" type="number" placeholder="Won"></div><div class="grid2"><input class="input" id="rD" type="number" placeholder="Draw"><input class="input" id="rL" type="number" placeholder="Lost"><input class="input" id="rPts" type="number" placeholder="Points"></div><button class="btn" style="margin-top:6px;background:#238636" onclick="saveRank()">Save & Auto-Sort Table</button><button class="btn btn-ghost" style="margin-top:8px" onclick="resetTable()">Reset Table to 0</button></div>
+<button class="btn btn-ghost" onclick="logout()">Exit Admin</button><div style="height:60px"></div>
 </div>
 </div>
-<div id="loginModal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:20">
-<div class="card" style="width:90%;max-width:340px"><h3>Admin Login</h3><input class="input" id="pass" type="password" placeholder="Password"><button class="btn" style="margin-top:10px" onclick="login()">Login</button><button class="btn btn-ghost" style="margin-top:8px" onclick="closeAdmin()">Cancel</button><p style="font-size:11px;color:#8b949e;text-align:center;margin-top:8px">Default: admin123</p></div>
-</div>
+<div id="loginModal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;z-index:20"><div class="card" style="width:90%;max-width:340px"><h3>Admin Login</h3><input class="input" id="pass" type="password" placeholder="Password"><button class="btn" style="margin-top:10px" onclick="login()">Login</button><button class="btn btn-ghost" style="margin-top:8px" onclick="closeAdmin()">Cancel</button><p style="font-size:11px;color:#6e7a8a;text-align:center;margin-top:8px">admin123</p></div></div>
 <script>
-const TEAMS=["Reformedbandic","Targeter","Junior","Asmicardo","Drayzen","Nohope"];
+const TEAM_DATA={
+"Reformedbandic":{color:"#ff3b30",short:"RB"},
+"Targeter":{color:"#007aff",short:"TG"},
+"Junior":{color:"#ffcc02",short:"JR"},
+"Asmicardo":{color:"#34c759",short:"AS"},
+"Drayzen":{color:"#af52de",short:"DZ"},
+"Nohope":{color:"#ff9500",short:"NH"}
+};
+const TEAMS=Object.keys(TEAM_DATA);
 const ADMIN_PASS="admin123";
-let defaultFixtures=[
-{home:"Reformedbandic",away:"Targeter",date:"2026-09-29",time:"15:00",venue:"Main Ground"},
-{home:"Junior",away:"Asmicardo",date:"2026-09-29",time:"16:30",venue:"Main Ground"},
-{home:"Drayzen",away:"Nohope",date:"2026-09-30",time:"15:00",venue:"Main Ground"},
-{home:"Targeter",away:"Junior",date:"2026-10-01",time:"15:00",venue:"Main Ground"},
-{home:"Asmicardo",away:"Drayzen",date:"2026-10-01",time:"16:30",venue:"Main Ground"}
+let fixtures=[
+{home:"Reformedbandic",away:"Targeter",date:"2026-09-29",time:"15:00"},
+{home:"Junior",away:"Asmicardo",date:"2026-09-29",time:"17:00"},
+{home:"Drayzen",away:"Nohope",date:"2026-09-30",time:"15:00"},
+{home:"Reformedbandic",away:"Junior",date:"2026-09-30",time:"17:00"},
+{home:"Targeter",away:"Drayzen",date:"2026-10-01",time:"15:00"},
+{home:"Asmicardo",away:"Nohope",date:"2026-10-01",time:"17:00"},
+{home:"Reformedbandic",away:"Asmicardo",date:"2026-10-02",time:"15:00"},
+{home:"Targeter",away:"Nohope",date:"2026-10-02",time:"17:00"},
+{home:"Junior",away:"Drayzen",date:"2026-10-03",time:"15:00"},
+{home:"Reformedbandic",away:"Drayzen",date:"2026-10-03",time:"17:00"},
+{home:"Targeter",away:"Asmicardo",date:"2026-10-04",time:"15:00"},
+{home:"Junior",away:"Nohope",date:"2026-10-04",time:"17:00"},
+{home:"Reformedbandic",away:"Nohope",date:"2026-10-05",time:"15:00"},
+{home:"Targeter",away:"Junior",date:"2026-10-05",time:"17:00"},
+{home:"Asmicardo",away:"Drayzen",date:"2026-10-06",time:"15:00"}
 ];
-let defaultTable=TEAMS.map(t=>({team:t,p:0,w:0,d:0,l:0,pts:0}));
-defaultTable[0]={team:"Reformedbandic",p:2,w:2,d:0,l:0,pts:6};
-defaultTable[1]={team:"Junior",p:2,w:1,d:1,l:0,pts:4};
-defaultTable[2]={team:"Targeter",p:2,w:1,d:0,l:1,pts:3};
-defaultTable[3]={team:"Asmicardo",p:2,w:0,d:1,l:1,pts:1};
-defaultTable[4]={team:"Drayzen",p:2,w:0,d:0,l:2,pts:0};
-defaultTable[5]={team:"Nohope",p:2,w:0,d:0,l:2,pts:0};
-
-let fixtures=JSON.parse(localStorage.getItem('pl_fixtures')||'null')||defaultFixtures;
-let table=JSON.parse(localStorage.getItem('pl_table')||'null')||defaultTable;
-let isAdmin=false;let cur='fixtures';
-
-function initSelects(){
-  const a=document.getElementById('selA'),b=document.getElementById('selB'),r=document.getElementById('rankSel');
-  a.innerHTML='';b.innerHTML='';r.innerHTML='';
-  TEAMS.forEach(t=>{a.innerHTML+=`<option>${t}</option>`;b.innerHTML+=`<option>${t}</option>`;r.innerHTML+=`<option>${t}</option>`});
-  b.selectedIndex=1;
-}
-function renderTeams(){
-  const c=document.getElementById('teamChips');c.innerHTML='';
-  TEAMS.forEach(t=>{c.innerHTML+=`<span style="background:#21262d;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:600">${t}</span>`});
-}
+let table=[
+{team:"Reformedbandic",p:3,w:2,d:1,l:0,pts:7},
+{team:"Junior",p:3,w:2,d:0,l:1,pts:6},
+{team:"Targeter",p:3,w:1,d:1,l:1,pts:4},
+{team:"Asmicardo",p:3,w:1,d:1,l:1,pts:4},
+{team:"Drayzen",p:3,w:0,d:1,l:2,pts:1},
+{team:"Nohope",p:3,w:0,d:0,l:3,pts:0}
+];
+let savedFix=localStorage.getItem('pl_fix_final');
+let savedTable=localStorage.getItem('pl_table_final');
+if(savedFix){try{fixtures=JSON.parse(savedFix)}catch(e){}}
+if(savedTable){try{table=JSON.parse(savedTable)}catch(e){}}
+let isAdmin=false,cur='fixtures';
+function badge(t){const d=TEAM_DATA[t]||{color:"#333",short:t.substring(0,2)};return `<div class="bdg" style="background:${d.color}">${d.short}</div>`}
+function initSel(){const a=document.getElementById('selA'),b=document.getElementById('selB'),r=document.getElementById('rankSel');a.innerHTML='';b.innerHTML='';r.innerHTML='';TEAMS.forEach(t=>{a.innerHTML+=`<option>${t}</option>`;b.innerHTML+=`<option>${t}</option>`;r.innerHTML+=`<option>${t}</option>`});b.selectedIndex=1}
 function switchTab(t){cur=t;document.getElementById('tabF').classList.toggle('active',t==='fixtures');document.getElementById('tabT').classList.toggle('active',t==='table');document.getElementById('viewFixtures').classList.toggle('hidden',t!=='fixtures');document.getElementById('viewTable').classList.toggle('hidden',t!=='table');}
 function render(){
-  const list=document.getElementById('fixtureList');const alist=document.getElementById('adminList');list.innerHTML='';alist.innerHTML='';
+  const list=document.getElementById('fixtureList'),alist=document.getElementById('adminList');list.innerHTML='';alist.innerHTML='';document.getElementById('fixCount').textContent=`(${fixtures.length} games)`;
   fixtures.forEach((f,i)=>{
-    const div=document.createElement('div');div.className='fixture';
-    div.innerHTML=`<div><div class="teams"><span>${f.home}</span><span class="vs">vs</span><span>${f.away}</span></div><div class="meta">📅 ${f.date} ⏰ ${f.time} ${f.venue?'• '+f.venue:''}</div></div>`;
-    list.appendChild(div);
-    const ad=document.createElement('div');ad.className='fixture';ad.innerHTML=`<div class="teams" style="font-size:13px"><span>${f.home}</span><span class="vs">vs</span><span>${f.away}</span></div><button class="btn btn-small btn-ghost" onclick="delF(${i})">Delete</button>`;
+    const row=document.createElement('div');row.className='fixture';
+    row.innerHTML=`<div style="flex:1"><div class="teams">${badge(f.home)}<span>${f.home}</span><span class="vs">VS</span><span>${f.away}</span>${badge(f.away)}</div><div class="meta">📅 ${f.date} ⏰ ${f.time}</div></div>`;
+    list.appendChild(row);
+    const ad=document.createElement('div');ad.className='fixture';ad.innerHTML=`<div class="teams" style="font-size:12px">${badge(f.home)}${f.home} <span class="vs">vs</span> ${f.away}</div><div style="display:flex;gap:6px"><button class="btn btn-small btn-danger" onclick="delF(${i})">Delete X</button></div>`;
     alist.appendChild(ad);
   });
-  localStorage.setItem('pl_fixtures',JSON.stringify(fixtures));
-  renderTable();
+  localStorage.setItem('pl_fix_final',JSON.stringify(fixtures));renderTable();
 }
 function renderTable(){
-  table.sort((a,b)=>b.pts-a.pts);
+  table.sort((a,b)=>b.pts-a.pts||b.w-a.w);
   const tb=document.getElementById('tableBody');tb.innerHTML='';
   table.forEach((r,i)=>{
     const tr=document.createElement('tr');
-    tr.innerHTML=`<td><span class="num">${i+1}</span></td><td><div class="team-row">${r.team}</div></td><td>${r.p}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td><td style="font-weight:800;color:#58a6ff">${r.pts}</td>`;
-    if(i<2)tr.style.background='rgba(35,134,54,0.1)';
+    tr.innerHTML=`<td><span class="pos">${i+1}</span></td><td><div class="team-cell">${badge(r.team)}${r.team}</div></td><td>${r.p}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td><td style="font-weight:900;color:#fff;background:#1a1e2b;border-radius:8px">${r.pts}</td>`;
     tb.appendChild(tr);
   });
-  localStorage.setItem('pl_table',JSON.stringify(table));
+  localStorage.setItem('pl_table_final',JSON.stringify(table));
 }
 function openAdmin(){if(isAdmin){showAdmin();return}document.getElementById('loginModal').classList.remove('hidden');document.getElementById('loginModal').style.display='flex';}
 function closeAdmin(){document.getElementById('loginModal').classList.add('hidden');}
-function showAdmin(){document.getElementById('viewFixtures').classList.remove('hidden');document.getElementById('viewTable').classList.remove('hidden');document.getElementById('adminPanel').classList.remove('hidden');document.getElementById('modeBadge').textContent='ADMIN MODE';document.getElementById('modeBadge').style.background='#238636';}
-function login(){if(document.getElementById('pass').value===ADMIN_PASS){isAdmin=true;closeAdmin();showAdmin();document.getElementById('pass').value='';}else alert('Wrong! admin123');}
-function logout(){isAdmin=false;document.getElementById('adminPanel').classList.add('hidden');switchTab(cur);document.getElementById('modeBadge').textContent='VIEW ONLY';document.getElementById('modeBadge').style.background='#1f6feb';}
-function addFixture(){
-  const home=document.getElementById('selA').value,away=document.getElementById('selB').value;
-  if(home===away){alert('Pick 2 different teams!');return}
-  fixtures.push({home,away,date:document.getElementById('fDate').value||'2026-10-02',time:document.getElementById('fTime').value||'15:00',venue:document.getElementById('fVenue').value});
-  render();
-}
-function delF(i){if(confirm('Delete this match?')){fixtures.splice(i,1);render();}}
-function saveRank(){
-  const team=document.getElementById('rankSel').value;
-  const idx=table.findIndex(x=>x.team===team);
-  table[idx]={team,p:parseInt(document.getElementById('rP').value)||0,w:parseInt(document.getElementById('rW').value)||0,d:parseInt(document.getElementById('rD').value)||0,l:parseInt(document.getElementById('rL').value)||0,pts:parseInt(document.getElementById('rPts').value)||0};
-  renderTable();
-  alert(team+' updated!');
-}
-initSelects();renderTeams();render();
+function showAdmin(){document.getElementById('viewFixtures').classList.remove('hidden');document.getElementById('viewTable').classList.remove('hidden');document.getElementById('adminPanel').classList.remove('hidden');document.getElementById('modeBadge').textContent='ADMIN';}
+function login(){if(document.getElementById('pass').value===ADMIN_PASS){isAdmin=true;closeAdmin();showAdmin();}else alert('Wrong! admin123');}
+function logout(){isAdmin=false;document.getElementById('adminPanel').classList.add('hidden');switchTab(cur);}
+function addFixture(){const h=document.getElementById('selA').value,a=document.getElementById('selB').value;if(h===a){alert('Different teams!');return}fixtures.push({home:h,away:a,date:document.getElementById('fDate').value||'2026-10-07',time:document.getElementById('fTime').value||'15:00'});render();}
+function delF(i){console.log('delete',i);fixtures.splice(i,1);render();alert('Deleted!');}
+function clearAllFixtures(){if(confirm('Delete ALL fixtures?')){fixtures=[];localStorage.removeItem('pl_fix_final');render();}}
+function resetTable(){if(confirm('Reset table to 0 points?')){table=TEAMS.map(t=>({team:t,p:0,w:0,d:0,l:0,pts:0}));renderTable();}}
+function saveRank(){const team=document.getElementById('rankSel').value;const idx=table.findIndex(x=>x.team===team);table[idx]={team,p:+document.getElementById('rP').value||0,w:+document.getElementById('rW').value||0,d:+document.getElementById('rD').value||0,l:+document.getElementById('rL').value||0,pts:+document.getElementById('rPts').value||0};renderTable();alert(team+' saved!');}
+initSel();render();
 </script>
 </body>
 </html>
