@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Premier League - 6 Teams</title>
+<title>Premier League 6 Teams</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,sans-serif}
 body{background:#0b0e14;color:#e6e6e6;min-height:100vh}
 .header{background:#11141d;border-bottom:1px solid #1e2332;padding:14px 16px;position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center}
-.header h1{font-size:15px;font-weight:900;letter-spacing:1px}
+.header h1{font-size:15px;font-weight:900}
 .badge{font-size:11px;background:#1f6feb;color:#fff;padding:4px 10px;border-radius:20px}
 .btn{background:#1f6feb;color:#fff;border:0;padding:12px;border-radius:12px;font-weight:800;cursor:pointer;width:100%}
 .btn-small{padding:6px 10px;font-size:12px;width:auto;border-radius:8px}
@@ -28,24 +28,26 @@ body{background:#0b0e14;color:#e6e6e6;min-height:100vh}
 .input,select{width:100%;background:#0e121d;border:1px solid #1e2636;border-radius:12px;padding:12px;color:#fff;margin:5px 0}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 table{width:100%;border-collapse:collapse}
-th{color:#6e7a8a;text-align:center;padding:10px 4px;border-bottom:1px solid #1e2636;font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+th{color:#6e7a8a;text-align:center;padding:10px 4px;border-bottom:1px solid #1e2636;font-size:10px;text-transform:uppercase}
 th:nth-child(2){text-align:left}
 td{padding:12px 4px;border-bottom:1px solid #161b2a;text-align:center;font-size:13px}
 td:nth-child(2){text-align:left;font-weight:700}
 .pos{width:22px;height:22px;border-radius:6px;background:#1a1e2b;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
-.hidden{display:none}
+.hidden{display:none!important}
 .team-cell{display:flex;align-items:center;gap:10px}
+#loginModal{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:50}
+#loginModal.show{display:flex!important}
 </style>
 </head>
 <body>
 <div class="header">
-<h1>🏴󠁧󠁢󠁥󠁮󠁧󠁿 PREMIER LEAGUE</h1>
+<h1>PREMIER LEAGUE</h1>
 <div style="display:flex;gap:8px;align-items:center"><span class="badge" id="modeBadge">VIEW</span><button class="btn btn-small" onclick="openAdmin()">Admin</button></div>
 </div>
 <div class="container">
 <div class="tabs">
-<div class="tab active" id="tabF" onclick="switchTab('fixtures')">🎮 Fixtures</div>
-<div class="tab" id="tabT" onclick="switchTab('table')">📊 Table</div>
+<div class="tab active" id="tabF" onclick="switchTab('fixtures')">Fixtures</div>
+<div class="tab" id="tabT" onclick="switchTab('table')">Table</div>
 </div>
 <div id="viewFixtures"><div class="card"><h3>All Matches - Season Fixtures <span id="fixCount"></span></h3><div id="fixtureList"></div></div></div>
 <div id="viewTable" class="hidden">
@@ -55,12 +57,12 @@ td:nth-child(2){text-align:left;font-weight:700}
 </div>
 <div id="adminPanel" class="hidden">
 <div class="card" style="border-color:#1f6feb"><h3>Add New Game</h3><div class="grid2"><select id="selA"></select><select id="selB"></select></div><div class="grid2"><input class="input" id="fDate" type="date"><input class="input" id="fTime" type="time"></div><button class="btn" style="margin-top:6px" onclick="addFixture()">+ Add Fixture</button></div>
-<div class="card"><h3>Manage Fixtures - Tap X to Delete <button class="btn btn-small btn-danger" onclick="clearAllFixtures()" style="float:right">Clear All</button></h3><div id="adminList"></div></div>
+<div class="card"><h3>Manage Fixtures <button class="btn btn-small btn-danger" onclick="clearAllFixtures()" style="float:right">Clear All</button></h3><div id="adminList"></div></div>
 <div class="card" style="border-color:#238636"><h3>Update Table Points</h3><select id="rankSel"></select><div class="grid2"><input class="input" id="rP" type="number" placeholder="Played"><input class="input" id="rW" type="number" placeholder="Won"></div><div class="grid2"><input class="input" id="rD" type="number" placeholder="Draw"><input class="input" id="rL" type="number" placeholder="Lost"><input class="input" id="rPts" type="number" placeholder="Points"></div><button class="btn" style="margin-top:6px;background:#238636" onclick="saveRank()">Save & Auto-Sort Table</button><button class="btn btn-ghost" style="margin-top:8px" onclick="resetTable()">Reset Table to 0</button></div>
 <button class="btn btn-ghost" onclick="logout()">Exit Admin</button><div style="height:60px"></div>
 </div>
 </div>
-<div id="loginModal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;z-index:20"><div class="card" style="width:90%;max-width:340px"><h3>Admin Login</h3><input class="input" id="pass" type="password" placeholder="Password"><button class="btn" style="margin-top:10px" onclick="login()">Login</button><button class="btn btn-ghost" style="margin-top:8px" onclick="closeAdmin()">Cancel</button><p style="font-size:11px;color:#6e7a8a;text-align:center;margin-top:8px">admin123</p></div></div>
+<div id="loginModal"><div class="card" style="width:90%;max-width:340px"><h3>Admin Login - Enter Password</h3><input class="input" id="pass" type="password" placeholder="Type admin123"><button class="btn" style="margin-top:10px" onclick="login()">Login</button><button class="btn btn-ghost" style="margin-top:8px" onclick="closeAdmin()">Cancel</button><p style="font-size:11px;color:#6e7a8a;text-align:center;margin-top:8px">Password: admin123</p></div></div>
 <script>
 const TEAM_DATA={
 "Reformedbandic":{color:"#ff3b30",short:"RB"},
@@ -109,7 +111,7 @@ function render(){
   const list=document.getElementById('fixtureList'),alist=document.getElementById('adminList');list.innerHTML='';alist.innerHTML='';document.getElementById('fixCount').textContent=`(${fixtures.length} games)`;
   fixtures.forEach((f,i)=>{
     const row=document.createElement('div');row.className='fixture';
-    row.innerHTML=`<div style="flex:1"><div class="teams">${badge(f.home)}<span>${f.home}</span><span class="vs">VS</span><span>${f.away}</span>${badge(f.away)}</div><div class="meta">📅 ${f.date} ⏰ ${f.time}</div></div>`;
+    row.innerHTML=`<div style="flex:1"><div class="teams">${badge(f.home)}<span>${f.home}</span><span class="vs">VS</span><span>${f.away}</span>${badge(f.away)}</div><div class="meta">${f.date} ${f.time}</div></div>`;
     list.appendChild(row);
     const ad=document.createElement('div');ad.className='fixture';ad.innerHTML=`<div class="teams" style="font-size:12px">${badge(f.home)}${f.home} <span class="vs">vs</span> ${f.away}</div><div style="display:flex;gap:6px"><button class="btn btn-small btn-danger" onclick="delF(${i})">Delete X</button></div>`;
     alist.appendChild(ad);
@@ -126,13 +128,35 @@ function renderTable(){
   });
   localStorage.setItem('pl_table_final',JSON.stringify(table));
 }
-function openAdmin(){if(isAdmin){showAdmin();return}document.getElementById('loginModal').classList.remove('hidden');document.getElementById('loginModal').style.display='flex';}
-function closeAdmin(){document.getElementById('loginModal').classList.add('hidden');}
-function showAdmin(){document.getElementById('viewFixtures').classList.remove('hidden');document.getElementById('viewTable').classList.remove('hidden');document.getElementById('adminPanel').classList.remove('hidden');document.getElementById('modeBadge').textContent='ADMIN';}
-function login(){if(document.getElementById('pass').value===ADMIN_PASS){isAdmin=true;closeAdmin();showAdmin();}else alert('Wrong! admin123');}
-function logout(){isAdmin=false;document.getElementById('adminPanel').classList.add('hidden');switchTab(cur);}
+function openAdmin(){
+  if(isAdmin){showAdmin();return}
+  document.getElementById('loginModal').classList.add('show');
+}
+function closeAdmin(){
+  document.getElementById('loginModal').classList.remove('show');
+  document.getElementById('pass').value='';
+}
+function showAdmin(){
+  document.getElementById('loginModal').classList.remove('show');
+  document.getElementById('viewFixtures').classList.remove('hidden');
+  document.getElementById('viewTable').classList.remove('hidden');
+  document.getElementById('adminPanel').classList.remove('hidden');
+  document.getElementById('modeBadge').textContent='ADMIN';
+  document.getElementById('modeBadge').style.background='#238636';
+}
+function login(){
+  const p=document.getElementById('pass').value.trim();
+  if(p===ADMIN_PASS){
+    isAdmin=true;
+    closeAdmin();
+    showAdmin();
+  }else{
+    alert('Wrong password! Type: admin123');
+  }
+}
+function logout(){isAdmin=false;document.getElementById('adminPanel').classList.add('hidden');switchTab(cur);document.getElementById('modeBadge').textContent='VIEW';document.getElementById('modeBadge').style.background='#1f6feb';}
 function addFixture(){const h=document.getElementById('selA').value,a=document.getElementById('selB').value;if(h===a){alert('Different teams!');return}fixtures.push({home:h,away:a,date:document.getElementById('fDate').value||'2026-10-07',time:document.getElementById('fTime').value||'15:00'});render();}
-function delF(i){console.log('delete',i);fixtures.splice(i,1);render();alert('Deleted!');}
+function delF(i){fixtures.splice(i,1);render();alert('Deleted!');}
 function clearAllFixtures(){if(confirm('Delete ALL fixtures?')){fixtures=[];localStorage.removeItem('pl_fix_final');render();}}
 function resetTable(){if(confirm('Reset table to 0 points?')){table=TEAMS.map(t=>({team:t,p:0,w:0,d:0,l:0,pts:0}));renderTable();}}
 function saveRank(){const team=document.getElementById('rankSel').value;const idx=table.findIndex(x=>x.team===team);table[idx]={team,p:+document.getElementById('rP').value||0,w:+document.getElementById('rW').value||0,d:+document.getElementById('rD').value||0,l:+document.getElementById('rL').value||0,pts:+document.getElementById('rPts').value||0};renderTable();alert(team+' saved!');}
